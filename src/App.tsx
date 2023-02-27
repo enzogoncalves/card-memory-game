@@ -93,7 +93,7 @@ function shuffleIcons(array: IconType[]) {
 const App = () => {
   const [cards, setCards] = useState<Card[]>(shuffleCards(createCards(8).slice(0, (8 * 2))))
   const [firstCard, setFirstCard] = useState<Card>()
-  const [gameDuration, setGameDuration] = useState<number>(5)
+  const [gameDuration, setGameDuration] = useState<number>(300)
   const [startGame, setStartGame] = useState<boolean>(false)
   const [startTimer, setStartTimer] = useState<boolean>(false)
   const [itsAWin, setItsAWin] = useState<boolean | undefined>(undefined)
