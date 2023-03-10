@@ -1,0 +1,17 @@
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+ .difficulty {
+  @apply p-4 border-2 border-black border-solid rounded-lg;
+ }
+
+ .difficulty button {
+  @apply py-3 px-4 w-full cursor-pointer font-bold text-lg uppercase text-white border-none shadow-dif-button hover:shadow-dif-button-hover transition-shadow duration-75;
+ }
+
+ .difficulty ul {
+  @apply list-none mt-4 flex flex-col gap-2;
+ }
+}

@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import { FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown } from "react-icons/fa"
-import { GiCardJoker } from "react-icons/gi"
 import { IconType } from "react-icons/lib"
 import { v4 as uuid } from "uuid"
+import StartGameModal from "./StartGameModal"
+import EachCard from "./Card"
+
 
 let icons = [FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown]
 
 icons = shuffleIcons(icons)
 
-type Card = {
+export type Card = {
   id: string
   visible: boolean
   active: boolean
@@ -16,45 +18,9 @@ type Card = {
   icon: IconType
 }
 
-type CardProps = {
-  card: Card
-  setCards: React.Dispatch<React.SetStateAction<Card[]>>,
-  firstCard: Card | undefined
-  setFirstCard: React.Dispatch<React.SetStateAction<Card | undefined>>
-  itsAWin: boolean | undefined
-}
+export type PlayerHistory = Map<string, { bestTime: number, lastTime: number, won: number, lost: number, id: number }>
 
-type PlayerHistory = {
-  difficulties: {
-    easy: {
-      bestTime: number,
-      lastTime: number,
-      won: number,
-      lost: number
-    },
-    medium: {
-      bestTime: number,
-      lastTime: number,
-      won: number,
-      lost: number
-    },
-    hard: {
-      bestTime: number,
-      lastTime: number,
-      won: number,
-      lost: number
-    },
-  }
-}
-
-type StartGameModalProps = {
-  setCards: React.Dispatch<React.SetStateAction<Card[]>>
-  setStartGame: React.Dispatch<React.SetStateAction<boolean>>
-  setStartTimer: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-
-function createCards(numberOfPairs: number) {
+export function createCards(numberOfPairs: number) {
 
   let numberOfPairsLeft = numberOfPairs;
 
@@ -62,8 +28,8 @@ function createCards(numberOfPairs: number) {
   let iconsCount = 0;
 
   while (numberOfPairsLeft > 0) {
-    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
-    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
 
     iconsCount++
     numberOfPairsLeft--
@@ -72,7 +38,7 @@ function createCards(numberOfPairs: number) {
   return cards;
 }
 
-function shuffleCards(array: Card[]) {
+export function shuffleCards(array: Card[]) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -93,26 +59,54 @@ function shuffleIcons(array: IconType[]) {
 const App = () => {
   const [cards, setCards] = useState<Card[]>(shuffleCards(createCards(8).slice(0, (8 * 2))))
   const [firstCard, setFirstCard] = useState<Card>()
-  const [gameDuration, setGameDuration] = useState<number>(300)
+  const [timeLeft, setTimeLeft] = useState<number>(60 * 5)
   const [startGame, setStartGame] = useState<boolean>(false)
   const [startTimer, setStartTimer] = useState<boolean>(false)
   const [itsAWin, setItsAWin] = useState<boolean | undefined>(undefined)
-  const [playerHistory, setPlayerHistory] = useState<undefined | PlayerHistory>()
+  const [playerHistory, setPlayerHistory] = useState<PlayerHistory>(new Map([
+    ['easy', { bestTime: 0, lastTime: 0, won: 0, lost: 0, id: 1 }],
+    ['medium', { bestTime: 0, lastTime: 0, won: 0, lost: 0, id: 2 }],
+    ['hard', { bestTime: 0, lastTime: 0, won: 0, lost: 0, id: 3 }]
+  ]))
+  const [difficulty, setDifficulty] = useState<string>('easy')
+  const [windowWidth, setWindowWidth] = useState<number>(0)
 
   let timer: any;
 
   function updateTimer() {
     timer = !timer && setInterval(() => {
-      setGameDuration(prevValue => prevValue - 1)
+      setTimeLeft(prevValue => prevValue - 1)
     }, 1000)
   }
 
+  function updateUserHistory(gameWon: boolean) {
+    const prevHistory = playerHistory;
+    let bestTime = 0;
+
+    if (Number(prevHistory.get(difficulty)?.bestTime) == 0) bestTime = 300 - timeLeft;
+    else if (Number(prevHistory.get(difficulty)?.bestTime) < 300 - timeLeft) bestTime = Number(prevHistory.get(difficulty)?.bestTime)
+    else bestTime = 300 - timeLeft
+
+    prevHistory.set(difficulty,
+      {
+        bestTime: bestTime,
+        lastTime: 300 - timeLeft,
+        won: gameWon ? Number(prevHistory.get(difficulty)?.won) + 1 : Number(prevHistory.get(difficulty)?.won),
+        lost: gameWon ? Number(prevHistory.get(difficulty)?.lost) : Number(prevHistory.get(difficulty)?.lost) + 1,
+        id: Number(prevHistory.get(difficulty)?.id)
+      })
+
+    setPlayerHistory(prevHistory)
+    console.log(prevHistory)
+  }
+
   useEffect(() => {
-    if (gameDuration == 0) {
+    if (timeLeft == 0) {
       clearInterval(timer)
       setStartTimer(false)
       setItsAWin(false)
       setCards(prevCards => prevCards.map(card => { return { ...card, visible: true, active: false } }))
+      updateUserHistory(false)
     }
 
     if (startTimer) {
@@ -120,107 +114,68 @@ const App = () => {
     }
 
     return () => clearInterval(timer)
-  }, [startTimer, gameDuration])
+  }, [startTimer, timeLeft])
 
   useEffect(() => {
-    const win = cards.every((card) => card.visible == true && !card.active) && gameDuration > 0
+    const win = cards.every((card) => card.visible == true && !card.active) && timeLeft > 0
 
     if (win) {
+      console.log('ganhou')
       clearInterval(timer)
       setItsAWin(true)
       setStartTimer(false)
+      updateUserHistory(true)
     }
-  }, [cards, gameDuration])
 
-  return <>
-    <h1>Card Memory Game</h1>
+  }, [cards, timeLeft])
+
+  useEffect(() => {
+    console.log('alterou 1')
+  }, [playerHistory])
+
+  function backToHome() {
+    setCards(shuffleCards(createCards(8).slice(0, (8 * 2))))
+    setItsAWin(undefined)
+    setStartGame(false)
+    setStartTimer(false)
+    setFirstCard(undefined)
+    setTimeLeft(300)
+    clearInterval(timer)
+  }
+
+  return <div className="p-4">
+    <h1 className="text-center">Card Memory Game</h1>
     {startGame
       ? <div style={{ display: 'flex', flexWrap: 'wrap', gap: "1rem" }}>
         {
           cards.map(card => (
-            <Card key={card.id} card={card} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} />
+            <EachCard key={card.id} card={card} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} />
           ))
         }
         <span>
-          {gameDuration}
+          {timeLeft}
         </span>
+        <button onClick={() => backToHome()}>Voltar para a página inicial</button>
       </div>
-      : <>
-        <StartGameModal setCards={setCards} setStartGame={setStartGame} setStartTimer={setStartTimer} />
-      </>
+      : <StartGameModal setCards={setCards} setStartGame={setStartGame} setStartTimer={setStartTimer} setDifficulty={setDifficulty} />
     }
-
-  </>
-}
-
-const Card = ({ card, setCards, firstCard, setFirstCard, itsAWin }: CardProps) => {
-  const handleCardClick = () => {
-    if (!firstCard) {
-      setFirstCard(card)
-      setCards(prevCards => prevCards.map(eachCard => {
-        if (card.id == eachCard.id) return { ...eachCard, visible: true, active: false }
-        return eachCard
-      }))
-    } else {
-      if (firstCard.icon == card.icon && firstCard.id != card.id) {
-        setCards(prevCards => prevCards.map(eachCard => {
-          if (card.id == eachCard.id || firstCard.id == eachCard.id) return { ...eachCard, visible: true, active: false, discoveredPair: true }
-          return eachCard
-        }))
-
-        setFirstCard(undefined)
-      }
-
-      if (firstCard.icon != card.icon) {
-        setCards(prevCards => prevCards.map(eachCard => {
-          if (card.id == eachCard.id) return { ...eachCard, visible: true, active: false }
-          return { ...eachCard, active: false }
-        }))
-
-        setTimeout(() => {
-          setCards(prevCards => prevCards.map(eachCard => {
-            if (eachCard.discoveredPair) return eachCard
-            return { ...eachCard, visible: false, active: true, }
-          }))
-
-          setFirstCard(undefined)
-        }, 1000)
-      }
-    }
-  }
-
-  return <button style={{ padding: ".5rem", cursor: "pointer" }} className={`${card.active ? "" : "icon-inactive"} ${itsAWin === false ? "icon-has-lost" : ""}`} onClick={() => handleCardClick()}>
-    {
-      card.visible
-        ? <card.icon className='icon' />
-        : <GiCardJoker className="icon" />
-    }
-  </button>
-}
-
-const StartGameModal = ({ setCards, setStartGame, setStartTimer }: StartGameModalProps) => {
-  return <div>
-    <h2>Select how hard you want to play</h2>
-    <div>
-      <button onClick={() => { setCards(shuffleCards(createCards(8).slice(0, (8 * 2)))); setStartGame(true); setStartTimer(true) }}>Easy</button>
-      <ul>
-        <li>Duration: 5 minutes</li>
-        <li>Nº of Cards: 16</li>
-      </ul>
-    </div>
-    <div>
-      <button onClick={() => { setCards(shuffleCards(createCards(16).slice(0, (16 * 2)))); setStartGame(true); setStartTimer(true) }}>Medium</button>
-      <ul>
-        <li>Duration: 5 minutes</li>
-        <li>Nº of Cards: 32</li>
-      </ul>
-    </div>
-    <div>
-      <button onClick={() => { setCards(shuffleCards(createCards(32).slice(0, (32 * 2)))); setStartGame(true); setStartTimer(true) }}>Hard</button>
-      <ul>
-        <li>Duration: 5 minutes</li>
-        <li>Nº of Cards: 64</li>
-      </ul>
+    <div className="p-4 mt-4 border-4 border-black border-solid rounded-lg">
+      <h2 className="text-center">Player History</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 pt-4">
+        {
+          [...playerHistory].map((value) => (
+            <div key={playerHistory.get(value[0])?.id} className="difficulty">
+              <h4 className="uppercase text-center">{value[0]}</h4>
+              <ul>
+                <li>Best Time: {playerHistory.get(value[0])?.bestTime}</li>
+                <li>Last Time: {playerHistory.get(value[0])?.lastTime}</li>
+                <li>Won: {playerHistory.get(value[0])?.won}</li>
+                <li>Lost: {playerHistory.get(value[0])?.lost}</li>
+              </ul>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 }
