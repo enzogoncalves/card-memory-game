@@ -8,7 +8,7 @@ type CardsGridProps = {
   firstCard: Card | undefined
   setFirstCard: React.Dispatch<React.SetStateAction<Card | undefined>>
   itsAWin: boolean | undefined,
-  difficulty: string
+  difficulty: string | undefined
 }
 
 const CardsGrid = ({ cards, setCards, setFirstCard, firstCard, itsAWin, difficulty }: CardsGridProps) => {

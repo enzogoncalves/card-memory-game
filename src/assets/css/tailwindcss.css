@@ -7,8 +7,8 @@
   @apply p-4 border-2 border-black border-solid rounded-lg;
  }
 
- .difficulty button {
-  @apply w-full uppercase text-white text-lg;
+ .difficulty .link {
+  @apply uppercase text-lg no-underline text-white w-full inline-block text-center;
  }
 
  .button {

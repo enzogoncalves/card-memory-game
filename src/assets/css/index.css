@@ -20,7 +20,7 @@ body {
 }
 
 .icon-button-active {
- background-image: url("./assets/img/diamond.png");
+ background-image: url("../img/diamond.png");
  background-color: purple;
  padding-block: 9.5px;
 }
