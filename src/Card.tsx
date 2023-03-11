@@ -1,4 +1,3 @@
-import { GiCardJoker } from "react-icons/gi"
 import { Card } from './App'
 
 type CardProps = {
@@ -6,7 +5,7 @@ type CardProps = {
   setCards: React.Dispatch<React.SetStateAction<Card[]>>,
   firstCard: Card | undefined
   setFirstCard: React.Dispatch<React.SetStateAction<Card | undefined>>
-  itsAWin: boolean | undefined
+  itsAWin: boolean | undefined,
 }
 
 const EachCard = ({ card, setCards, firstCard, setFirstCard, itsAWin }: CardProps) => {
@@ -45,11 +44,11 @@ const EachCard = ({ card, setCards, firstCard, setFirstCard, itsAWin }: CardProp
     }
   }
 
-  return <button style={{ padding: ".5rem", cursor: "pointer" }} className={`${card.active ? "" : "icon-inactive"} ${itsAWin === false ? "icon-has-lost" : ""}`} onClick={() => handleCardClick()}>
+  return <button className={`${card.active ? "" : "icon-inactive"} ${itsAWin === false ? "icon-has-lost" : ""} ${card.visible ? "" : "icon-button-active"} p-2 cursor-pointer`} onClick={() => handleCardClick()}>
     {
       card.visible
-        ? <card.icon className='icon' />
-        : <GiCardJoker className="icon" />
+        ? <card.icon className={`icon`} />
+        : <div className={`icon`} />
     }
   </button>
 }

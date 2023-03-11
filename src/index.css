@@ -10,17 +10,17 @@ body {
  font-family: "Roboto", sans-serif;
 }
 
-.icon {
- width: 50px;
- height: 50px;
-}
-
 .icon-inactive {
  pointer-events: none;
- filter: grayscale(50);
 }
 
 .icon-has-lost {
  filter: grayscale(0);
  color: rgb(163, 48, 48);
+}
+
+.icon-button-active {
+ background-image: url("./assets/img/diamond.png");
+ background-color: purple;
+ padding-block: 9.5px;
 }
