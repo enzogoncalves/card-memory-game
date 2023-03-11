@@ -4,6 +4,7 @@ import { IconType } from "react-icons/lib"
 import { v4 as uuid } from "uuid"
 import StartGameModal from "./StartGameModal"
 import EachCard from "./Card"
+import CardsGrid from "./CardsGrid"
 
 
 let icons = [FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown]
@@ -28,8 +29,8 @@ export function createCards(numberOfPairs: number) {
   let iconsCount = 0;
 
   while (numberOfPairsLeft > 0) {
-    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
-    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
 
     iconsCount++
     numberOfPairsLeft--
@@ -69,7 +70,11 @@ const App = () => {
     ['hard', { bestTime: 0, lastTime: 0, won: 0, lost: 0, id: 3 }]
   ]))
   const [difficulty, setDifficulty] = useState<string>('easy')
-  const [windowWidth, setWindowWidth] = useState<number>(0)
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
+
+  window.addEventListener('resize', () => {
+    setWindowWidth(window.innerWidth)
+  })
 
   let timer: any;
 
@@ -97,7 +102,6 @@ const App = () => {
       })
 
     setPlayerHistory(prevHistory)
-    console.log(prevHistory)
   }
 
   useEffect(() => {
@@ -120,7 +124,6 @@ const App = () => {
     const win = cards.every((card) => card.visible == true && !card.active) && timeLeft > 0
 
     if (win) {
-      console.log('ganhou')
       clearInterval(timer)
       setItsAWin(true)
       setStartTimer(false)
@@ -130,7 +133,6 @@ const App = () => {
   }, [cards, timeLeft])
 
   useEffect(() => {
-    console.log('alterou 1')
   }, [playerHistory])
 
   function backToHome() {
@@ -143,41 +145,39 @@ const App = () => {
     clearInterval(timer)
   }
 
-  return <div className="p-4">
+  return <main className="p-4">
     <h1 className="text-center">Card Memory Game</h1>
-    {startGame
-      ? <div style={{ display: 'flex', flexWrap: 'wrap', gap: "1rem" }}>
-        {
-          cards.map(card => (
-            <EachCard key={card.id} card={card} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} />
-          ))
-        }
-        <span>
-          {timeLeft}
-        </span>
-        <button onClick={() => backToHome()}>Voltar para a página inicial</button>
-      </div>
-      : <StartGameModal setCards={setCards} setStartGame={setStartGame} setStartTimer={setStartTimer} setDifficulty={setDifficulty} />
-    }
-    <div className="p-4 mt-4 border-4 border-black border-solid rounded-lg">
-      <h2 className="text-center">Player History</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 pt-4">
-        {
-          [...playerHistory].map((value) => (
-            <div key={playerHistory.get(value[0])?.id} className="difficulty">
-              <h4 className="uppercase text-center">{value[0]}</h4>
-              <ul>
-                <li>Best Time: {playerHistory.get(value[0])?.bestTime}</li>
-                <li>Last Time: {playerHistory.get(value[0])?.lastTime}</li>
-                <li>Won: {playerHistory.get(value[0])?.won}</li>
-                <li>Lost: {playerHistory.get(value[0])?.lost}</li>
-              </ul>
+    <div className="mt-4">
+      {startGame
+        ? <div>
+          <CardsGrid cards={cards} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} playerHistory={playerHistory.get(difficulty)} difficulty={difficulty}/>
+          <span>{timeLeft}</span>
+          <button onClick={() => backToHome()}>Voltar para a página inicial</button>
+        </div>
+        : <>
+          <StartGameModal setCards={setCards} setStartGame={setStartGame} setStartTimer={setStartTimer} setDifficulty={setDifficulty} />
+          <div className="p-4 border-4 border-black border-solid rounded-lg">
+            <h2 className="text-center">Player History</h2>
+            <div className="grid grid-cols-3 gap-x-4 gap-y-4 pt-4">
+              {
+                [...playerHistory].map((value) => (
+                  <div key={playerHistory.get(value[0])?.id} className="difficulty">
+                    <h4 className="uppercase text-center">{value[0]}</h4>
+                    <ul>
+                      <li>Best Time: {playerHistory.get(value[0])?.bestTime}</li>
+                      <li>Last Time: {playerHistory.get(value[0])?.lastTime}</li>
+                      <li>Won: {playerHistory.get(value[0])?.won}</li>
+                      <li>Lost: {playerHistory.get(value[0])?.lost}</li>
+                    </ul>
+                  </div>
+                ))
+              }
             </div>
-          ))
+          </div>
+        </>
         }
-      </div>
     </div>
-  </div>
+  </main>
 }
 
 export default App

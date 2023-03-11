@@ -40,7 +40,7 @@ const EachCard = ({ card, setCards, firstCard, setFirstCard, itsAWin }: CardProp
           }))
 
           setFirstCard(undefined)
-        }, 1000)
+        }, 1500)
       }
     }
   }
