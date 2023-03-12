@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react"
 import { Routes, Route } from 'react-router-dom'
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, update } from "firebase/database";
 import { FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown } from "react-icons/fa"
 import { IconType } from "react-icons/lib"
 import { v4 as uuid } from "uuid"
 import Home from "./Home"
 import GameScreen from "./GameScreen"
+import SignIn from "./SignIn"
+import Register from "./Register"
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBLRLJGQukECYQJHj7uD5tHMAPMTk81D-4",
+  authDomain: "card-memory-game-38410.firebaseapp.com",
+  databaseURL: "https://card-memory-game-38410-default-rtdb.firebaseio.com",
+  projectId: "card-memory-game-38410",
+  storageBucket: "card-memory-game-38410.appspot.com",
+  messagingSenderId: "193486301764",
+  appId: "1:193486301764:web:9dfc58577f03752511aa11",
+  measurementId: "G-ZWW4XR6LWH"
+};
+
+export const app = initializeApp(firebaseConfig);
 
 let icons = [FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown]
 
@@ -21,8 +38,12 @@ export type Card = {
 export type PlayerHistory = Map<string, { bestTime: number, lastTime: number, won: number, lost: number, id: number }>
 
 export type HomeProps = {
-  setDifficulty: React.Dispatch<React.SetStateAction<string>>,
+  setDifficulty: React.Dispatch<React.SetStateAction<string>>
   playerHistory: PlayerHistory
+  actualUsername: string | undefined
+  setPlayerHistory: React.Dispatch<React.SetStateAction<PlayerHistory>>
+  setActualUsername: React.Dispatch<React.SetStateAction<string | undefined>>
+  setUserUid: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 export type GameScreenProps = {
@@ -37,6 +58,10 @@ export type GameScreenProps = {
   setFirstCard: React.Dispatch<React.SetStateAction<Card | undefined>>
   timeLeft: number
   timer: any
+  setActualUsername: React.Dispatch<React.SetStateAction<string | undefined>>
+  setUserUid: React.Dispatch<React.SetStateAction<string | undefined>>
+  setPlayerHistory: React.Dispatch<React.SetStateAction<PlayerHistory>>
+  userUid: string | undefined
 }
 
 
@@ -76,6 +101,17 @@ export function formatTime(time: number | undefined) {
   return `${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
 }
 
+function updateDbPlayerHistory(uid: string | undefined, username: string | undefined, newPlayerHistory: PlayerHistory) {
+  const db = getDatabase();
+
+  const userData = {
+    username: username,
+    difficulties: [...new Map(newPlayerHistory)]
+  };
+
+  return update(ref(db, `/users/${uid}/`), userData)
+}
+
 const App = () => {
   const [cards, setCards] = useState<Card[]>([])
   const [firstCard, setFirstCard] = useState<Card>()
@@ -88,6 +124,8 @@ const App = () => {
     ['hard', { bestTime: 0, lastTime: 0, won: 0, lost: 0, id: 3 }]
   ]))
   const [difficulty, setDifficulty] = useState<string>('easy')
+  const [actualUsername, setActualUsername] = useState<string>()
+  const [userUid, setUserUid] = useState<string>()
 
   let timer: any;
 
@@ -115,12 +153,12 @@ const App = () => {
       })
 
     setPlayerHistory(prevHistory)
+    updateDbPlayerHistory(userUid, actualUsername, prevHistory)
   }
 
   useEffect(() => {
 
     if (timeLeft == 0 && startTimer) {
-      console.log('a')
       clearInterval(timer)
       setStartTimer(false)
       setItsAWin(false)
@@ -153,8 +191,10 @@ const App = () => {
   return <main className="p-4">
     <h1 className="text-center">Card Memory Game</h1>
     <Routes>
-      <Route path="/" element={<Home setDifficulty={setDifficulty} playerHistory={playerHistory} />} />
-      <Route path="/:difficulty" element={<GameScreen cards={cards} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} setItsAWin={setItsAWin} timeLeft={timeLeft} setTimeLeft={setTimeLeft} timer={timer} setStartTimer={setStartTimer} playerHistory={playerHistory} />} />
+      <Route path="/" element={<SignIn />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/home" element={<Home setDifficulty={setDifficulty} playerHistory={playerHistory} actualUsername={actualUsername} setPlayerHistory={setPlayerHistory} setActualUsername={setActualUsername} setUserUid={setUserUid} />} />
+      <Route path="/:difficulty" element={<GameScreen cards={cards} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} setItsAWin={setItsAWin} timeLeft={timeLeft} setTimeLeft={setTimeLeft} timer={timer} setStartTimer={setStartTimer} playerHistory={playerHistory} setPlayerHistory={setPlayerHistory} setActualUsername={setActualUsername} setUserUid={setUserUid} userUid={userUid} />} />
     </Routes>
   </main>
 }

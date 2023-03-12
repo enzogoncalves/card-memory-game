@@ -2,11 +2,12 @@ import { NavLink } from "react-router-dom"
 
 type StartGameModalProps = {
   setDifficulty: React.Dispatch<React.SetStateAction<string>>
+  actualUsername: string | undefined
 }
 
-const StartGameModal = ({ setDifficulty }: StartGameModalProps) => {
+const StartGameModal = ({ setDifficulty, actualUsername }: StartGameModalProps) => {
   return <div className="p-4 mt-4 border-4 border-black border-solid rounded-lg">
-    <h2 className="text-center">Select how hard you want to play</h2>
+    <h2 className="text-center">{actualUsername}, select how hard you want to play</h2>
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 pt-4">
       <div className="difficulty">
         <NavLink to={'/easy'} className="bg-green-600 button link" onClick={() => { setDifficulty('easy') }}>Easy</NavLink>
