@@ -52,23 +52,23 @@ const Register = () => {
   }
 
   return (
-    <div className="mt-4 w-fit mx-auto flex flex-col items-center border-2 border-black border-solid rounded-lg px-10 py-4 pb-8">
-      <h2>Create a account</h2>
-      <form className="flex flex-col gap-4 mt-4" onSubmit={(e) => { e.preventDefault(); submitForm() }}>
+    <div className="w-fit mx-auto flex flex-col items-center border-2 border-black dark:border-zinc-50 border-solid rounded-lg px-10 py-4 pb-8">
+      <h2 className="dark:text-text-color">Create a account</h2>
+      <form className="flex flex-col gap-7 mt-4 dark:text-text-color xsm:min-w-[330px]" onSubmit={(e) => { e.preventDefault(); submitForm() }}>
         <div className="flex flex-col gap-1">
           <label htmlFor="username">Username</label>
-          <input type="text" name="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} minLength={4} required className="px-3 py-1 text-base border-neutral-600 border-[1px] focus:outline-blue-900 rounded-full min-w-[300px]" />
+          <input type="text" name="username" id="username" placeholder="Type here your username" value={username} onChange={(e) => setUsername(e.target.value)} minLength={4} required className="form-input" />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="px-3 py-1 text-base border-neutral-600 border-[1px] focus:outline-blue-900 rounded-full min-w-[300px]" />
+          <input type="email" name="email" id="email" value={email} placeholder="Type here your email" onChange={(e) => setEmail(e.target.value)} required className="form-input" />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="px-3 py-1 text-base border-neutral-600 border-[1px] focus:outline-blue-900 rounded-full" />
+          <input type="password" name="password" id="password" value={password} placeholder="Type here your password" onChange={(e) => setPassword(e.target.value)} required minLength={6} className="form-input" />
         </div>
-        <input type="submit" value="Create Account" className="cursor-pointer border-none bg-orange-600 px-3 py-2 mt-2 text-base font-semibold text-white rounded-full" />
-        <p>Already have one? <NavLink to={'/'} className="text-blue-600">Click here to sign in</NavLink></p>
+        <input type="submit" value="Create Account" className="form-input-submit bg-[#ff7f11] dark:bg-[#e76c00] hover:bg-[#e76c00] dark:hover:bg-[#ff7f11]" />
+        <p>Already have one? <NavLink to={'/'} className="text-[#4392f1]">Click here to sign in</NavLink></p>
       </form>
     </div>
   )

@@ -24,25 +24,6 @@ const GameScreen = ({ cards, setCards, setFirstCard, firstCard, itsAWin, setItsA
   const [startGame, setStartGame] = useState<boolean>(false)
   const navigate = useNavigate()
 
-  function backToHome() {
-    setCards([])
-    setItsAWin(undefined)
-    setStartTimer(false)
-    setFirstCard(undefined)
-    clearInterval(timer)
-    setStartGame(false)
-  }
-
-  function restartGame() {
-    if (difficulty == "easy") setCards(shuffleCards(createCards(8).slice(0, (8 * 2))))
-    else if (difficulty == "medium") setCards(shuffleCards(createCards(16).slice(0, (16 * 2))))
-    else if (difficulty == "hard") setCards(shuffleCards(createCards(32).slice(0, (32 * 2))))
-    setFirstCard(undefined)
-    setTimeLeft(300)
-    setItsAWin(undefined)
-    setStartTimer(true)
-  }
-
   useEffect(() => {
     const app = initializeApp(firebaseConfig)
 
@@ -85,16 +66,35 @@ const GameScreen = ({ cards, setCards, setFirstCard, firstCard, itsAWin, setItsA
     }
   }, [])
 
+  function backToHome() {
+    setCards([])
+    setItsAWin(undefined)
+    setStartTimer(false)
+    setFirstCard(undefined)
+    clearInterval(timer)
+    setStartGame(false)
+  }
+
+  function restartGame() {
+    if (difficulty == "easy") setCards(shuffleCards(createCards(8).slice(0, (8 * 2))))
+    else if (difficulty == "medium") setCards(shuffleCards(createCards(16).slice(0, (16 * 2))))
+    else if (difficulty == "hard") setCards(shuffleCards(createCards(32).slice(0, (32 * 2))))
+    setFirstCard(undefined)
+    setTimeLeft(300)
+    setItsAWin(undefined)
+    setStartTimer(true)
+  }
+
   return (
     <>
       {startGame
-        ? <div className='mt-4'>
-          <CardsGrid cards={cards} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} difficulty={difficulty} />
-          <div className={`${difficulty == "easy" ? "max-w-3xl" : difficulty == "medium" ? "max-w-3xl" : "max-w-4xl"} mx-auto pt-2 flex flex-col lg:flex-row items-center justify-between gap-4`}>
-            <span className="inline-block w-[75px] text-center py-2 px-3 border-[1px] border-solid border-black">{formatTime(timeLeft)}</span>
+        ? <div className='py-4'>
+          <CardsGrid cards={cards} setCards={setCards} setFirstCard={setFirstCard} firstCard={firstCard} itsAWin={itsAWin} difficulty={difficulty} timeLeft={timeLeft} />
+          <div className={`${difficulty == "easy" ? "max-w-3xl" : difficulty == "medium" ? "max-w-3xl" : "max-w-4xl"} mx-auto pt-2 flex flex-col lg:flex-row items-center justify-between gap-4 dark:text-text-color`}>
+            <span className="inline-block w-[75px] text-center py-2 px-3 border-[1px] border-solid border-black dark:border-zinc-50">{formatTime(timeLeft)}</span>
             {!itsAWin
-              ? <button title="Restart Game" className="bg-transparent border-none cursor-pointer" onClick={() => restartGame()}><VscDebugRestart className="w-7 h-7" /></button>
-              : <button title="Play Again" className="bg-amber-500 text-base button" onClick={() => restartGame()}>Play Again</button>
+              ? <button title="Restart Game" className="bg-transparent border-none cursor-pointer text-black dark:text-zinc-50" onClick={() => restartGame()}><VscDebugRestart className="w-7 h-7" /></button>
+              : <button title="Play Again" className="text-text-color bg-amber-600 hover:bg-amber-700 text-base button" onClick={() => restartGame()}>Play Again</button>
             }
             <div className="flex flex-col 2xsm:flex-row justify-between gap-5 md:gap-7 py-2 px-3">
               <div>

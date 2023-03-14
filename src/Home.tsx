@@ -41,9 +41,9 @@ const Home = ({ setDifficulty, playerHistory, setPlayerHistory, actualUsername, 
 
   return (<>
     {userLoaded
-      ? <div className="flex flex-col gap-4">
+      ? <div className="flex flex-col gap-4 max-w-5xl mx-auto">
         <StartGameModal setDifficulty={setDifficulty} actualUsername={actualUsername} />
-        <div className="p-4 border-4 border-black border-solid rounded-lg">
+        <div className="dark:text-text-color p-4 border-4 border-black dark:border-zinc-50 border-solid rounded-lg">
           <h2 className="text-center">Player History</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 pt-4">
             {

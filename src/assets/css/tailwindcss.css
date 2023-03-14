@@ -3,16 +3,28 @@
 @tailwind utilities;
 
 @layer components {
+ html {
+  @apply dark:bg-neutral-800;
+ }
+
+ .form-input {
+  @apply py-1 text-base dark:text-text-color border-slate-400 dark:border-zinc-400 focus:border-slate-900 dark:focus:border-white border-t-0 border-r-0 border-l-0 border-b-2 border-solid bg-transparent outline-none w-full px-2;
+ }
+
+ .form-input-submit {
+  @apply cursor-pointer border-none px-3 py-2 mt-2 text-base font-semibold text-white rounded-full transition-colors;
+ }
+
  .difficulty {
-  @apply p-4 border-2 border-black border-solid rounded-lg;
+  @apply p-4 border-2 border-black dark:border-zinc-50 border-solid rounded-lg;
  }
 
  .difficulty .link {
-  @apply uppercase text-lg no-underline text-white w-full inline-block text-center;
+  @apply uppercase text-lg no-underline text-white w-full inline-block text-center transition-colors;
  }
 
  .button {
-  @apply border-none text-base shadow-dif-button hover:shadow-dif-button-hover transition-shadow duration-75 font-bold py-3 px-4 cursor-pointer;
+  @apply border-none text-base shadow-dif-button shadow-black dark:shadow-none hover:shadow-dif-button-hover transition duration-75 font-bold py-3 px-4 cursor-pointer text-center border-slate-400 dark:border-zinc-400 focus:border-slate-900 dark:focus:border-white;
  }
 
  .difficulty ul {
@@ -20,6 +32,14 @@
  }
 
  .icon {
-  @apply w-10 h-10 sm:w-12 sm:h-12;
+  @apply w-10 h-10 sm:w-12 sm:h-12 dark:text-zinc-50;
+ }
+
+ .icon-inactive {
+  @apply pointer-events-none;
+ }
+
+ .icon-has-lost .icon {
+  @apply dark:text-rose-600;
  }
 }

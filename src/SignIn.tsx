@@ -35,19 +35,19 @@ const SignIn = () => {
   }
 
   return (
-    <div className="mt-4 w-fit mx-auto flex flex-col items-center border-2 border-black border-solid rounded-lg px-10 py-4 pb-8">
-      <h2>Sign in to your account</h2>
-      <form className="flex flex-col gap-4 mt-4" onSubmit={(e) => { e.preventDefault(); submitForm() }}>
+    <div className="w-fit mx-auto flex flex-col items-center border-2 border-black dark:border-zinc-50 border-solid rounded-lg px-10 py-4 pb-8">
+      <h2 className="dark:text-text-color">Sign in to your account</h2>
+      <form className="flex flex-col gap-7 mt-6 dark:text-text-color" onSubmit={(e) => { e.preventDefault(); submitForm() }}>
         <div className="flex flex-col gap-1">
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="px-3 py-1 text-base border-neutral-600 border-[1px] focus:outline-blue-900 rounded-full" />
+          <input type="email" name="email" id="email" placeholder="Type your email here" value={email} onChange={(e) => setEmail(e.target.value)} required className="form-input" />
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="px-3 py-1 text-base border-neutral-600 border-[1px] focus:outline-blue-900 rounded-full" />
+          <input type="password" name="password" id="password" placeholder="Type your password here" value={password} onChange={(e) => setPassword(e.target.value)} required className="form-input" />
         </div>
-        <input type="submit" value="Sign In" className="cursor-pointer border-none bg-blue-600 px-3 py-2 mt-2 text-base font-semibold text-white rounded-full" />
-        <p>Doesn't have a account? <NavLink to={'/register'} className="text-orange-600">Click here to create one</NavLink></p>
+        <input type="submit" value="Sign In" className="form-input-submit bg-blue-600 hover:bg-blue-700 dark:bg-[#4392f1] dark:hover:bg-[#2c71c5]" />
+        <p>Doesn't have a account? <NavLink to={'/register'} className="text-[#ff7f11]">Click here to create one</NavLink></p>
       </form>
     </div>
   )

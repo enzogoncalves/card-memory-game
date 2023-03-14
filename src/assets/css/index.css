@@ -6,21 +6,18 @@
  box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+ height: 100%;
+}
+
 body {
  font-family: "Roboto", sans-serif;
 }
 
-.icon-inactive {
- pointer-events: none;
-}
-
-.icon-has-lost {
- filter: grayscale(0);
- color: rgb(163, 48, 48);
-}
-
-.icon-button-active {
+.icon-button-inactive {
  background-image: url("../img/diamond.png");
- background-color: purple;
+ background-color: purple !important;
  padding-block: 9.5px;
 }
