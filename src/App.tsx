@@ -73,8 +73,8 @@ export function createCards(numberOfPairs: number) {
   let iconsCount = 0;
 
   while (numberOfPairsLeft > 0) {
-    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
-    cards.push({ id: uuid(), visible: true, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
+    cards.push({ id: uuid(), visible: false, active: true, icon: icons[iconsCount], discoveredPair: false })
 
     iconsCount++
     numberOfPairsLeft--
