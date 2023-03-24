@@ -24,7 +24,7 @@ const StartGameModal = ({ setDifficulty, actualUsername }: StartGameModalProps) 
         </ul>
       </div>
       <div className="difficulty">
-        <NavLink to={'/hard'} className="bg-red-700 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600 button link" onClick={() => { setDifficulty('hard') }}>Hard</NavLink>
+        <NavLink to={'/hard'} className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 button link" onClick={() => { setDifficulty('hard') }}>Hard</NavLink>
         <ul>
           <li>5 Minutes</li>
           <li>64 Cards</li>

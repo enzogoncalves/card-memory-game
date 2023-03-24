@@ -19,6 +19,11 @@ module.exports = {
    colors: {
     "text-color": "#F4F4F5",
    },
+   gridTemplateColumns: {
+    "header-default": "1fr auto",
+    header: "70px 1fr 70px",
+    "header-md": "140px 1fr 130px",
+   },
   },
  },
  plugins: [],

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { initializeApp } from "firebase/app";
+import { getAuth, signOut } from "firebase/auth";
 import { getDatabase, ref, update } from "firebase/database";
 import { FaApple, FaFacebook, FaSnapchatGhost, FaTwitch, FaYoutube, FaBookmark, FaCheckCircle, FaGoogle, FaHtml5, FaJsSquare, FaLinkedin, FaOpera, FaSafari, FaStackOverflow, FaTelegram, FaWaze, FaXbox, FaArrowAltCircleDown, FaArrowAltCircleLeft, FaArrowAltCircleRight, FaArrowAltCircleUp, FaBurn, FaCat, FaCross, FaDollarSign, FaGlassMartiniAlt, FaPizzaSlice, FaPlane, FaRss, FaSkull, FaThumbsUp, FaThumbsDown } from "react-icons/fa"
 import { IconType } from "react-icons/lib"
+import { FiLogOut } from 'react-icons/fi'
 import { v4 as uuid } from "uuid"
 import Home from "./Home"
 import GameScreen from "./GameScreen"
 import SignIn from "./SignIn"
 import Register from "./Register"
+import Switch from 'react-switch'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLRLJGQukECYQJHj7uD5tHMAPMTk81D-4",
@@ -126,6 +129,12 @@ const App = () => {
   const [difficulty, setDifficulty] = useState<string>('easy')
   const [actualUsername, setActualUsername] = useState<string>()
   const [userUid, setUserUid] = useState<string>()
+  const [theme, setTheme] = useState<string>(
+    localStorage.getItem("theme") === "dark" ? "dark" : "light"
+  )
+
+
+  const navigate = useNavigate()
 
   let timer: any;
 
@@ -157,7 +166,16 @@ const App = () => {
   }
 
   useEffect(() => {
+    const root = window.document.documentElement;
 
+    const removeOldTheme = theme === "dark" ? "light" : "dark"
+
+    root.classList.remove(removeOldTheme)
+    root.classList.add(theme)
+    localStorage.setItem("theme", theme)
+  }, [theme])
+
+  useEffect(() => {
     if (timeLeft == 0 && startTimer) {
       clearInterval(timer)
       setStartTimer(false)
@@ -188,8 +206,40 @@ const App = () => {
 
   }, [cards, timeLeft])
 
+
+  function logOut() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      navigate('/')
+    }).catch((error) => {
+      alert("Não foi posível te desconectar. Tente novamente.")
+    });
+  }
+
+  console.log(window.location.pathname)
+
   return <main className="p-4 min-h-full dark:bg-neutral-800">
-    <h1 className="pb-5 text-center dark:text-text-color">Card Memory Game</h1>
+    <div className={`pb-5 grid grid-cols-header-default xsm:grid-cols-header md:grid-cols-header-md items-center gap-x-8 gap-y-4`}>
+      {window.location.pathname !== '/' && window.location.pathname !== '/register'
+        ? <a href="#" onClick={() => logOut()} className="no-underline hover:underline text-black dark:text-text-color text-lg flex items-center gap-2 row-start-2 xsm:row-start-1"><FiLogOut /><span className="inline xsm:hidden md:inline">Sair da Conta</span></a>
+        : <></>
+      }
+      <h1 className="text-xl sm:text-3xl xsm:justify-self-center col-start-1 xsm:col-start-2 dark:text-text-color">Card Memory Game</h1>
+      <Switch
+        onChange={() => setTheme(prevTheme => prevTheme == "dark" ? "light" : "dark")}
+        checked={theme == "dark"}
+        checkedIcon={false}
+        uncheckedIcon={false}
+        height={20}
+        width={60}
+        handleDiameter={25}
+        onHandleColor={"#c0c2cc"}
+        onColor={"#525252"}
+        offHandleColor={"#525252"}
+        offColor={"#c0c2cc"}
+        className="justify-self-end xsm:col-start-3 row-span-2 self-center xsm:row-span-1"
+      />
+    </div>
     <Routes>
       <Route path="/" element={<SignIn />} />
       <Route path="/register" element={<Register />} />

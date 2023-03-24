@@ -24,7 +24,7 @@
  }
 
  .button {
-  @apply border-none text-base shadow-dif-button shadow-black dark:shadow-none hover:shadow-dif-button-hover transition duration-75 font-bold py-3 px-4 cursor-pointer text-center border-slate-400 dark:border-zinc-400 focus:border-slate-900 dark:focus:border-white;
+  @apply border-none text-base shadow-dif-button hover:shadow-dif-button-hover dark:shadow-none transition duration-75 font-bold py-3 px-4 cursor-pointer text-center border-slate-400 dark:border-zinc-400 focus:border-slate-900 dark:focus:border-white;
  }
 
  .difficulty ul {

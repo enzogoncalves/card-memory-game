@@ -118,7 +118,7 @@ const GameScreen = ({ cards, setCards, setFirstCard, firstCard, itsAWin, setItsA
                 <span className="inline-block">{playerHistory.get(String(difficulty))?.lost}</span>
               </div>
             </div>
-            <NavLink to={'/home'} onClick={() => backToHome()} className="px-4 py-2 bg-emerald-600 text-white button no-underline">Back to Home</NavLink>
+            <NavLink to={'/home'} onClick={() => backToHome()} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 text-white button no-underline">Back to Home</NavLink>
           </div>
         </div>
         : <GameSkeleton difficulty={difficulty} />
