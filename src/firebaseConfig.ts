@@ -1,5 +1,5 @@
 export const firebaseConfig = {
- apiKey: "AIzaSyBLRLJGQukECYQJHj7uD5tHMAPMTk81D-4",
+ apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
  authDomain: "card-memory-game-38410.firebaseapp.com",
  databaseURL: "https://card-memory-game-38410-default-rtdb.firebaseio.com",
  projectId: "card-memory-game-38410",
