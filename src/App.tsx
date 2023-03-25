@@ -206,6 +206,8 @@ const App = () => {
     });
   }
 
+  console.log(import.meta.env)
+
   return <main className="p-4 min-h-full dark:bg-neutral-800">
     <div className={`pb-5 grid grid-cols-header-default xsm:grid-cols-header md:grid-cols-header-md items-center gap-x-8 gap-y-4`}>
       {window.location.pathname !== '/' && window.location.pathname !== '/register'
