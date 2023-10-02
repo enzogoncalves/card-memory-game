@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, DatabaseReference } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatTime, HomeProps } from './App'
@@ -21,7 +21,7 @@ const Home = ({ setDifficulty, playerHistory, setPlayerHistory, actualUsername, 
       if (user) {
         const uid = user.uid;
         setUserUid(uid)
-
+        
         const db = getDatabase();
         const userRef = ref(db, 'users/' + user.uid);
 
@@ -31,6 +31,8 @@ const Home = ({ setDifficulty, playerHistory, setPlayerHistory, actualUsername, 
           setActualUsername(data.username)
           setPlayerHistory(new Map(data.difficulties))
           setUserLoaded(true)
+        }, (e) => {
+          console.log(e)
         });
 
       } else {

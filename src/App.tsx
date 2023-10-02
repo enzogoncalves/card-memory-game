@@ -105,7 +105,7 @@ function updateDbPlayerHistory(uid: string | undefined, username: string | undef
   return update(ref(db, `/users/${uid}/`), userData)
 }
 
-const App = () => {
+function App() {
   const [cards, setCards] = useState<Card[]>([])
   const [firstCard, setFirstCard] = useState<Card>()
   const [timeLeft, setTimeLeft] = useState<number>(300)
