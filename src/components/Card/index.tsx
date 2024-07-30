@@ -1,15 +1,13 @@
-import { Card } from './App'
+import { useContext } from "react"
+import { Card, GameContext } from "../../contexts/GameContext"
 
 type CardProps = {
   card: Card
-  setCards: React.Dispatch<React.SetStateAction<Card[]>>,
-  firstCard: Card | undefined
-  setFirstCard: React.Dispatch<React.SetStateAction<Card | undefined>>
-  itsAWin: boolean | undefined,
-  timeLeft: number
 }
 
-const EachCard = ({ card, setCards, firstCard, setFirstCard, itsAWin, timeLeft }: CardProps) => {
+const EachCard = ({ card }: CardProps) => {
+	const { setCards, firstCard, setFirstCard, itsAWin, timeLeft } = useContext(GameContext)
+
   const handleCardClick = () => {
     if (!firstCard) {
       setFirstCard(card)

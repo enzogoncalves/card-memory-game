@@ -1,11 +1,19 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom"
+import { GameContext } from "../../contexts/GameContext";
 
 const SignIn = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const navigate = useNavigate()
+	const { userLoaded } = useContext(GameContext)
+
+	useEffect(() => {
+		if(userLoaded) {
+			navigate('/')
+		}
+	}, [])
 
   function submitForm() {
     const auth = getAuth();
@@ -14,8 +22,8 @@ const SignIn = () => {
       .then((userCredential) => {
         setEmail('')
         setPassword('')
-
-        navigate('/home')
+				console.log('1')
+				navigate('/')
       })
       .catch((error) => {
         const errorCode = error.code;

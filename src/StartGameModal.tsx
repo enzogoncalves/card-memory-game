@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 
 type StartGameModalProps = {
-  setDifficulty: React.Dispatch<React.SetStateAction<string>>
+  setDifficulty: React.Dispatch<React.SetStateAction<'easy' | 'medium' | 'hard'>>
   actualUsername: string | undefined
 }
 
@@ -10,21 +10,21 @@ const StartGameModal = ({ setDifficulty, actualUsername }: StartGameModalProps) 
     <h2 className="text-center">{actualUsername}, select how hard you want to play</h2>
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 pt-4">
       <div className="difficulty">
-        <NavLink to={'/easy'} className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 button link" onClick={() => { setDifficulty('easy') }}>Easy</NavLink>
+        <NavLink to={'/game/easy'} className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 button link" onClick={() => { setDifficulty('easy') }}>Easy</NavLink>
         <ul>
           <li>5 Minutes</li>
           <li>16 Cards</li>
         </ul>
       </div>
       <div className="difficulty">
-        <NavLink to={'/medium'} className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 button link" onClick={() => { setDifficulty('medium') }}>Medium</NavLink>
+        <NavLink to={'/game/medium'} className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 button link" onClick={() => { setDifficulty('medium') }}>Medium</NavLink>
         <ul>
           <li>5 Minutes</li>
           <li>32 Cards</li>
         </ul>
       </div>
       <div className="difficulty">
-        <NavLink to={'/hard'} className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 button link" onClick={() => { setDifficulty('hard') }}>Hard</NavLink>
+        <NavLink to={'/game/hard'} className="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 button link" onClick={() => { setDifficulty('hard') }}>Hard</NavLink>
         <ul>
           <li>5 Minutes</li>
           <li>64 Cards</li>

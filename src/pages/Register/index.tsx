@@ -1,4 +1,3 @@
-// import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { useState } from "react";
@@ -35,7 +34,7 @@ const Register = () => {
         setEmail('')
         setPassword('')
 
-        navigate('/home')
+        navigate('/')
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -68,7 +67,7 @@ const Register = () => {
           <input type="password" name="password" id="password" value={password} placeholder="Type here your password" onChange={(e) => setPassword(e.target.value)} required minLength={6} className="form-input" />
         </div>
         <input type="submit" value="Create Account" className="form-input-submit bg-[#ff7f11] dark:bg-[#e76c00] hover:bg-[#e76c00] dark:hover:bg-[#ff7f11]" />
-        <p>Already have one? <NavLink to={'/'} className="text-[#4392f1]">Click here to sign in</NavLink></p>
+        <p>Already have one? <NavLink to={'/signin'} className="text-[#4392f1]">Click here to sign in</NavLink></p>
       </form>
     </div>
   )
