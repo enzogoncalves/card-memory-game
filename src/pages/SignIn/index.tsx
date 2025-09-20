@@ -22,7 +22,6 @@ const SignIn = () => {
       .then((userCredential) => {
         setEmail('')
         setPassword('')
-				console.log('1')
 				navigate('/')
       })
       .catch((error) => {

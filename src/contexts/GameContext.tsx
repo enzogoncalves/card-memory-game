@@ -99,10 +99,9 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
           setPlayerHistory(new Map(data.difficulties))
           setUserLoaded(true)
         }, (error) => {
-          console.log(error)
+          
         });
       } else {
-				console.log('3')
         navigate('/signin')
       }
     });
@@ -171,7 +170,6 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     }
 
     if (startTimer) {
-			console.log('timer startado')
       updateTimer()
     }
 
@@ -192,10 +190,6 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     }
 
   }, [cards, timeLeft])
-
-	useEffect(() => {
-		console.log('nome mudado para: ' + actualUsername)
-	}, [ actualUsername ])
 
 	return (
 		<GameContext.Provider value={{
