@@ -45,7 +45,7 @@ const EachCard = ({ card }: CardProps) => {
     }
   }
 
-  return <button className={`${card.active ? "" : "icon-inactive"} ${itsAWin === false ? "icon-has-lost" : ""} ${card.visible ? "" : "icon-button-inactive"} p-2 cursor-pointer border-none dark:bg-slate-700`} onClick={() => handleCardClick()}>
+  return <button className={`${card.active ? "" : "icon-inactive"} ${itsAWin === false ? "icon-has-lost" : ""} ${card.visible ? "" : "icon-button-inactive"} p-2 cursor-pointer bg-white dark:bg-slate-700 border-4 border-yellow-600`} onClick={() => handleCardClick()}>
     {
       card.visible
         ? <card.icon className={`icon ${card.discoveredPair ? 'dark:!text-zinc-50' : ''}`} />

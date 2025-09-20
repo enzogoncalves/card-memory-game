@@ -17,7 +17,7 @@ body {
 }
 
 .icon-button-inactive {
- background-image: url("../img/diamond.png");
- background-color: purple !important;
+ /* background-image: url("../img/diamond.png"); */
+ /* background-color: rgb(121, 121, 121) !important; */
  padding-block: 9.5px;
 }
