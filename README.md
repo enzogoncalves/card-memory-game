@@ -1,4 +1,4 @@
-# Card Memory Game
+# Memory Card Game
 
 ## 🕹️ Test your memory skills with 3 different levels: Easy, Medium or Hard. Can you do it?
 

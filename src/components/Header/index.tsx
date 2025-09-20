@@ -40,7 +40,7 @@ export function Header() {
         ? <a href="#" onClick={() => logOut()} className="no-underline hover:underline text-black dark:text-text-color text-lg flex items-center gap-2 row-start-2 xsm:row-start-1"><FiLogOut /><span className="inline xsm:hidden md:inline">Sair da Conta</span></a>
         : <></>
       }
-      <h1 className="text-xl sm:text-3xl xsm:justify-self-center col-start-1 xsm:col-start-2 dark:text-text-color">Card Memory Game</h1>
+      <h1 className="text-xl sm:text-3xl xsm:justify-self-center col-start-1 xsm:col-start-2 dark:text-text-color">Memory Card Game</h1>
       <Switch
         onChange={() => setTheme(prevTheme => prevTheme == "dark" ? "light" : "dark")}
         checked={theme == "dark"}
