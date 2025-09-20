@@ -1,8 +1,11 @@
 {
   "name": "card-memory-game",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+	"engines": {
+		"node": "22.x"
+	},
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,9 +13,9 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.1",
-    "firebase": "^9.17.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "firebase": "^12.3.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.9.0",
     "react-switch": "^7.0.0",
